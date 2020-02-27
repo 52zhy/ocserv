@@ -126,10 +126,10 @@ cp crl.pem /etc/ocserv/
 #配置 ocserv
 cd /etc/ocserv/
 rm -rf ocserv.conf
-wget https://raw.githubusercontent.com/chendong12/ocserv/master/ocserv.conf
+wget https://raw.githubusercontent.com/52zhy/ocserv/master/ocserv.conf
 #
 cd /root/anyconnect
-wget https://raw.githubusercontent.com/chendong12/ocserv/master/gen-client-cert.sh
+wget https://raw.githubusercontent.com/52zhy/ocserv/master/gen-client-cert.sh
 wget https://raw.githubusercontent.com/chendong12/ocserv/master/user_add.sh
 wget https://raw.githubusercontent.com/chendong12/ocserv/master/user_del.sh
 chmod +x gen-client-cert.sh
