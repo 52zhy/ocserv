@@ -3,6 +3,7 @@
 #                                                     #
 # This is a ocserv installation for CentOS 7 and 6    #
 # Version: 1.1.1 20181101                             #
+# Author: haolong,zcm8483@gmail.com                   #
 # Website: https://github.com/chendong12/ocserv       #
 #                                                     #
 ####################################################
@@ -84,8 +85,8 @@ cd /root/anyconnect
 #生成 CA 证书
 certtool --generate-privkey --outfile ca-key.pem
 cat >ca.tmpl <<EOF
-cn = "Annyconnect CA"
-organization = "Anyconnect"
+cn = "HY Annyconnect CA"
+organization = "HUAYU"
 serial = 1
 expiration_days = 3650
 ca
@@ -98,8 +99,8 @@ cp ca-cert.pem /etc/ocserv/
 #生成本地服务器证书
 certtool --generate-privkey --outfile server-key.pem
 cat >server.tmpl <<EOF
-cn = "Annyconnect CA"
-organization = "Anyconnect"
+cn = "HY Annyconnect CA"
+organization = "HUAYU"
 serial = 2
 expiration_days = 3650
 encryption_key
@@ -129,7 +130,7 @@ rm -rf ocserv.conf
 wget https://raw.githubusercontent.com/52zhy/ocserv/master/ocserv.conf
 #
 cd /root/anyconnect
-wget https://raw.githubusercontent.com/52zhy/ocserv/master/gen-client-cert.sh
+wget https://raw.githubusercontent.com/chendong12/ocserv/master/gen-client-cert.sh
 wget https://raw.githubusercontent.com/chendong12/ocserv/master/user_add.sh
 wget https://raw.githubusercontent.com/chendong12/ocserv/master/user_del.sh
 chmod +x gen-client-cert.sh
@@ -140,9 +141,11 @@ centos3_iptables(){
 echo 1 > /proc/sys/net/ipv4/ip_forward
 echo 'net.ipv4.ip_forward = 1' >> /etc/sysctl.conf
 sysctl -p
+service iptables start
 chmod +x /etc/rc.d/rc.local
 cat >>  /etc/rc.d/rc.local <<EOF
 service ocserv start
+service iptables start
 service httpd start
 echo 1 > /proc/sys/net/ipv4/ip_forward
 iptables -F
@@ -159,8 +162,7 @@ iptables -t nat -A POSTROUTING -s 10.12.0.0/24 -o eth0 -j MASQUERADE
 #自动调整mtu，ocserv服务器使用
 iptables -I FORWARD -p tcp --tcp-flags SYN,RST SYN -j TCPMSS --clamp-mss-to-pmtu
 EOF
-echo "Anyconnect服务器安装完成，服务准备重启，重启后即可正常使用"
-
+reboot
 }
 function centos_install(){
 sys_clean
